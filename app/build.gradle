@@ -191,6 +191,7 @@ def downloadBootstrap(String arch, String expectedChecksum, String version) {
             return
         } else {
             logger.quiet("Deleting old local file with wrong hash: " + localUrl + ": expected: " + expectedChecksum + ", actual: " + checksum)
+            delete(file("${layout.buildDirectory.asFile.get()}/intermediates/cxx"))
             file.delete()
         }
     }
@@ -226,7 +227,7 @@ clean {
 task downloadBootstraps() {
     doLast {
         def packageVariant = project.ext.packageVariant
-        downloadBootstrap("aarch64", "ff5772beee424876dc23c2ac682d26305295132856d07c4400992f12c5b813f6", "")
+        downloadBootstrap("aarch64", "f531390ada1f34ab94064f625914a2f7c736865442c4dc4107c5e3d200eb4e24", "")
         /*if (packageVariant == "apt-android-7") {
             def version = "2026.02.12-r1" + "%2B" + "apt.android-7"
             downloadBootstrap("aarch64", "ff5772beee424876dc23c2ac682d26305295132856d07c4400992f12c5b813f6", version)
