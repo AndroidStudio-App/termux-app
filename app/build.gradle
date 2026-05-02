@@ -191,7 +191,6 @@ def downloadBootstrap(String arch, String expectedChecksum, String version) {
             return
         } else {
             logger.quiet("Deleting old local file with wrong hash: " + localUrl + ": expected: " + expectedChecksum + ", actual: " + checksum)
-            delete(file("${layout.buildDirectory.asFile.get()}/intermediates/cxx"))
             file.delete()
         }
     }
