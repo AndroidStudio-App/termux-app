@@ -180,6 +180,13 @@ public final class TermuxPreferenceConstants {
         public static final String KEY_CRASH_REPORT_NOTIFICATIONS_ENABLED = "crash_report_notifications_enabled";
         public static final boolean DEFAULT_VALUE_CRASH_REPORT_NOTIFICATIONS_ENABLED = true;
 
+
+        /**
+         * Defines the key for whether IDE file logging is enabled or not.
+         */
+        public static final String KEY_IDE_FILE_LOGGING_ENABLED = "ide_file_logging_enabled";
+        public static final boolean DEFAULT_VALUE_IDE_FILE_LOGGING_ENABLED = false;
+
     }
 
 

@@ -255,7 +255,17 @@ public class TermuxAppSharedPreferences extends AppSharedPreferences {
     }
 
     public void setCrashReportNotificationsEnabled(boolean value) {
-        SharedPreferenceUtils.setBoolean(mSharedPreferences, TERMUX_APP.KEY_CRASH_REPORT_NOTIFICATIONS_ENABLED, value, false);
+        SharedPreferenceUtils.setBoolean(mMultiProcessSharedPreferences, TERMUX_APP.KEY_CRASH_REPORT_NOTIFICATIONS_ENABLED, value, true);
+    }
+
+
+    public boolean isIdeFileLoggingEnabled() {
+        return SharedPreferenceUtils.getBoolean(mSharedPreferences, TERMUX_APP.KEY_IDE_FILE_LOGGING_ENABLED, TERMUX_APP.DEFAULT_VALUE_IDE_FILE_LOGGING_ENABLED);
+    }
+
+    public void setIdeFileLoggingEnabled(boolean value) {
+        SharedPreferenceUtils.setBoolean(mMultiProcessSharedPreferences, TERMUX_APP.KEY_IDE_FILE_LOGGING_ENABLED, value, true);
     }
 
 }
+

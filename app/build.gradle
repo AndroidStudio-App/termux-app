@@ -1,5 +1,5 @@
 plugins {
-    id "com.android.application"
+    id "com.android.library"
 }
 
 ext {
@@ -17,11 +17,11 @@ android {
 
     compileSdkVersion project.properties.compileSdkVersion.toInteger()
     ndkVersion = System.getenv("JITPACK_NDK_VERSION") ?: project.properties.ndkVersion
-    def appVersionName = System.getenv("TERMUX_APP_VERSION_NAME") ?: ""
+    /*def appVersionName = System.getenv("TERMUX_APP_VERSION_NAME") ?: ""
     def apkVersionTag = System.getenv("TERMUX_APK_VERSION_TAG") ?: ""
     def splitAPKsForDebugBuilds = System.getenv("TERMUX_SPLIT_APKS_FOR_DEBUG_BUILDS") ?: "1"
     def splitAPKsForReleaseBuilds = System.getenv("TERMUX_SPLIT_APKS_FOR_RELEASE_BUILDS") ?: "0" // F-Droid does not support split APKs #1904
-
+    */
     dependencies {
         implementation "androidx.annotation:annotation:1.9.0"
         implementation "androidx.core:core:1.13.1"
@@ -43,11 +43,12 @@ android {
     defaultConfig {
         minSdkVersion project.properties.minSdkVersion.toInteger()
         targetSdkVersion project.properties.targetSdkVersion.toInteger()
-        versionCode 118
+        /*versionCode 118
         versionName "0.118.0"
 
         if (appVersionName) versionName = appVersionName
         validateVersionName(versionName)
+        */
 
         buildConfigField "String", "TERMUX_PACKAGE_VARIANT", "\"" + project.ext.packageVariant + "\"" // Used by TermuxApplication class
 
@@ -65,6 +66,12 @@ android {
                 cFlags "-std=c11", "-Wall", "-Wextra", "-Werror", "-Os", "-fno-stack-protector", "-Wl,--gc-sections"
             }
         }
+        
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
+        
+        /*
 
         splits {
             abi {
@@ -95,8 +102,9 @@ android {
 
         debug {
             signingConfig signingConfigs.debug
-        }
+        } */
     }
+    
 
     compileOptions {
         // Flag to enable support for the new language APIs
@@ -127,7 +135,7 @@ android {
             useLegacyPackaging true
         }
     }
-
+    /*
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             if (variant.buildType.name == "debug") {
@@ -139,7 +147,7 @@ android {
             }
         }
     }
-
+    */
     buildFeatures {
         buildConfig true
     }
@@ -150,7 +158,7 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.10"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
-
+/*
 task versionName {
     doLast {
         print android.defaultConfig.versionName
@@ -163,7 +171,7 @@ def validateVersionName(String versionName) {
     if (!java.util.regex.Pattern.matches("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?\$", versionName))
         throw new GradleException("The versionName '"  + versionName + "' is not a valid version as per semantic version '2.0.0' spec in the format 'major.minor.patch(-prerelease)(+buildmetadata)'. https://semver.org/spec/v2.0.0.html.")
 }
-
+*/
 def downloadBootstrap(String arch, String expectedChecksum, String version) {
     def digest = java.security.MessageDigest.getInstance("SHA-256")
 
@@ -187,7 +195,7 @@ def downloadBootstrap(String arch, String expectedChecksum, String version) {
         }
     }
 
-    def remoteUrl = "https://github.com/termux/termux-packages/releases/download/bootstrap-" + version + "/bootstrap-" + arch + ".zip"
+    def remoteUrl = "https://github.com/AndroidStudio-App/NeonIDE/releases/download/bootstrap" + version + "/bootstrap-" + arch + ".zip"
     logger.quiet("Downloading " + remoteUrl + " ...")
 
     file.parentFile.mkdirs()
@@ -218,9 +226,10 @@ clean {
 task downloadBootstraps() {
     doLast {
         def packageVariant = project.ext.packageVariant
-        if (packageVariant == "apt-android-7") {
+        downloadBootstrap("aarch64", "ff5772beee424876dc23c2ac682d26305295132856d07c4400992f12c5b813f6", "")
+        /*if (packageVariant == "apt-android-7") {
             def version = "2026.02.12-r1" + "%2B" + "apt.android-7"
-            downloadBootstrap("aarch64", "ea2aeba8819e517db711f8c32369e89e7c52cee73e07930ff91185e1ab93f4f3", version)
+            downloadBootstrap("aarch64", "ff5772beee424876dc23c2ac682d26305295132856d07c4400992f12c5b813f6", version)
             downloadBootstrap("arm", "a38f4d3b2f735f83be2bf54eff463e86dc32a3e2f9f861c1557c4378d249c018", version)
             downloadBootstrap("i686", "f5bc0b025b9f3b420b5fcaeefc064f888f5f22a0d6fd7090f4aac0c33eb3555b", version)
             downloadBootstrap("x86_64", "b7fd0f2e3a4de534be3144f9f91acc768630fc463eaf134ab2e64c545e834f7a", version)
@@ -232,12 +241,15 @@ task downloadBootstraps() {
             downloadBootstrap("x86_64", "615b590679ee6cd885b7fd2ff9473c845e920f9b422f790bb158c63fe42b8481", version)
         } else {
             throw new GradleException("Unsupported TERMUX_PACKAGE_VARIANT \"" + packageVariant + "\"")
-        }
+        }*/
     }
 }
 
 afterEvaluate {
-    android.applicationVariants.all { variant ->
+    tasks.named("preBuild").configure {
+        dependsOn(downloadBootstraps)
+     }       
+    /*android.libraryVariants.all { variant ->
         variant.javaCompileProvider.get().dependsOn(downloadBootstraps)
-    }
+    }*/
 }

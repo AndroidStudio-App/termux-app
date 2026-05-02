@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+/*apply plugin: 'maven-publish'*/
 
 android {
     namespace = "com.termux.shared"
@@ -26,7 +26,7 @@ android {
         // due to missing classes like java.nio.file.Path.
         implementation "commons-io:commons-io:2.5"
 
-        implementation project(":terminal-view")
+        api project(":terminal-view")
 
         implementation "com.termux:termux-am-library:v2.0.0"
     }
@@ -41,12 +41,15 @@ android {
                 cppFlags ''
             }
         }
+        ndk {
+            abiFilters /*'x86', 'x86_64', 'armeabi-v7a',*/ 'arm64-v8a'
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -64,13 +67,13 @@ android {
         }
     }
 
-    publishing {
+    /*publishing {
         multipleVariants {
             withSourcesJar()
             withJavadocJar()
             allVariants()
         }
-    }
+    }*/
 }
 
 dependencies {
@@ -78,7 +81,7 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 }
-
+/*
 task sourceJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     archiveClassifier = "sources"
@@ -98,3 +101,4 @@ afterEvaluate {
         }
     }
 }
+*/
