@@ -53,17 +53,32 @@ public class Logger {
 
 
 
+    public interface ExternalLogger {
+        void log(int priority, String tag, String message);
+    }
+
+    private static ExternalLogger sExternalLogger;
+
+    public static void setExternalLogger(ExternalLogger externalLogger) {
+        sExternalLogger = externalLogger;
+    }
+
     public static void logMessage(int logPriority, String tag, String message) {
+        String fullTag = getFullTag(tag);
         if (logPriority == Log.ERROR && CURRENT_LOG_LEVEL >= LOG_LEVEL_NORMAL)
-            Log.e(getFullTag(tag), message);
+            Log.e(fullTag, message);
         else if (logPriority == Log.WARN && CURRENT_LOG_LEVEL >= LOG_LEVEL_NORMAL)
-            Log.w(getFullTag(tag), message);
+            Log.w(fullTag, message);
         else if (logPriority == Log.INFO && CURRENT_LOG_LEVEL >= LOG_LEVEL_NORMAL)
-            Log.i(getFullTag(tag), message);
+            Log.i(fullTag, message);
         else if (logPriority == Log.DEBUG && CURRENT_LOG_LEVEL >= LOG_LEVEL_DEBUG)
-            Log.d(getFullTag(tag), message);
+            Log.d(fullTag, message);
         else if (logPriority == Log.VERBOSE && CURRENT_LOG_LEVEL >= LOG_LEVEL_VERBOSE)
-            Log.v(getFullTag(tag), message);
+            Log.v(fullTag, message);
+
+        if (sExternalLogger != null) {
+            sExternalLogger.log(logPriority, fullTag, message);
+        }
     }
 
     public static void logExtendedMessage(int logLevel, String tag, String message) {
