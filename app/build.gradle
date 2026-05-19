@@ -195,7 +195,7 @@ def downloadBootstrap(String arch, String expectedChecksum, String version) {
         }
     }
 
-    def remoteUrl = "https://github.com/AndroidStudio-App/NeonIDE/releases/download/bootstrap" + version + "/bootstrap-" + arch + ".zip"
+    def remoteUrl = "https://github.com/AndroidStudio-App/terminal-packages/releases/download/bootstrap" + version + "/bootstrap-" + arch + ".zip"
     logger.quiet("Downloading " + remoteUrl + " ...")
 
     file.parentFile.mkdirs()
@@ -226,7 +226,7 @@ clean {
 task downloadBootstraps() {
     doLast {
         def packageVariant = project.ext.packageVariant
-        downloadBootstrap("aarch64", "18890e019cb44118d36e805d16518ec00b899c5d11551226e6c547df95911aea", "")
+        downloadBootstrap("aarch64", "e8e1a273bce7f4f5eca1353b62f789a4df071d3cb564c3a7504d344b0a8d7b90", "")
         /*if (packageVariant == "apt-android-7") {
             def version = "2026.02.12-r1" + "%2B" + "apt.android-7"
             downloadBootstrap("aarch64", "ff5772beee424876dc23c2ac682d26305295132856d07c4400992f12c5b813f6", version)
