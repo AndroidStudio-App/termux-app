@@ -226,7 +226,7 @@ clean {
 task downloadBootstraps() {
     doLast {
         def packageVariant = project.ext.packageVariant
-        downloadBootstrap("aarch64", "d5e98c5edbe82aa6c5f2b741169af80c8b331613febb009846bccd32184766ed", "")
+        downloadBootstrap("aarch64", "cdc38e361c069735bdd4093d22e9156974f1d1094ef32dfc0bdb8742fc996ee1", "")
         /*if (packageVariant == "apt-android-7") {
             def version = "2026.02.12-r1" + "%2B" + "apt.android-7"
             downloadBootstrap("aarch64", "ff5772beee424876dc23c2ac682d26305295132856d07c4400992f12c5b813f6", version)
